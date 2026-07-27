@@ -1,0 +1,43 @@
+{
+  "name": "avron-cms-backend",
+  "version": "1.0.0",
+  "description": "Avron Studio — Enterprise CMS Backend (Express + MongoDB + Cloudinary)",
+  "type": "module",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "seed": "node src/database/seeders/index.js",
+    "verify": "node scripts/verify-phase1.mjs",
+    "smoke": "node -e \"import('./src/app.js').then(() => { console.log('APP OK — all modules loaded'); process.exit(0); }).catch((e) => { console.error(e); process.exit(1); })\""
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.5.1",
+    "compression": "^1.7.5",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "hpp": "^0.2.3",
+    "ioredis": "^5.4.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "multer": "^2.0.0",
+    "nodemailer": "^6.9.16",
+    "otplib": "^12.0.1",
+    "winston": "^3.17.0",
+    "xss": "^1.0.15",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "mongodb-memory-server": "^11.2.0",
+    "nodemon": "^3.1.9"
+  }
+}
