@@ -7,7 +7,7 @@ export const SETTINGS_DEFAULTS = {
   general: {
     isPublic: true,
     values: {
-      siteName: { en: 'Avron Studio' },
+      siteName: { en: 'Arcovia Studio' },
       tagline: { en: 'Creative Digital Agency' },
       defaultLanguage: 'en',
       timezone: 'Asia/Dhaka',
@@ -33,7 +33,7 @@ export const SETTINGS_DEFAULTS = {
   contact: {
     isPublic: true,
     values: {
-      email: 'hello@avronstudio.com',
+      email: 'hello@arcoviastudio.com',
       phone: '',
       whatsapp: '',
       messenger: '',
@@ -68,8 +68,8 @@ export const SETTINGS_DEFAULTS = {
   seoDefaults: {
     isPublic: true,
     values: {
-      titleTemplate: '%s — Avron Studio',
-      metaTitle: { en: 'Avron Studio — Creative Digital Agency' },
+      titleTemplate: '%s — Arcovia Studio',
+      metaTitle: { en: 'Arcovia Studio — Creative Digital Agency' },
       metaDescription: { en: '' },
       keywords: [],
       ogDefaultImage: null,
@@ -111,7 +111,7 @@ export const SETTINGS_DEFAULTS = {
       secure: false,
       username: '',
       password: '',
-      fromName: 'Avron Studio',
+      fromName: 'Arcovia Studio',
       fromEmail: '',
       replyTo: '',
     },

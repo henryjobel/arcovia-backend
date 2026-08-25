@@ -6,6 +6,7 @@ import { uniqueSlug } from '../../core/utils/slugify.js';
 import { getComponentDefinition } from '../components/registry.js';
 import { sanitizeFieldData } from '../../core/utils/sanitizeContent.js';
 import { resolveSections } from './sectionResolver.js';
+import { cache } from '../../core/services/cache.service.js';
 
 const repo = new BaseRepository(Page, { resourceName: 'Page' });
 const MAX_REVISIONS = 10;
@@ -44,6 +45,7 @@ export const createPage = async (data, actorId) => {
 
 export const updatePage = async (id, data, actorId) => {
   const page = await repo.findByIdOrFail(id);
+  const oldSlug = page.slug;
 
   if (data.slug && data.slug !== page.slug) {
     if (page.systemKey) throw new BusinessRuleError('System pages cannot be renamed/reslugged');
@@ -61,6 +63,10 @@ export const updatePage = async (id, data, actorId) => {
   }
   page.updatedBy = actorId;
   await page.save();
+  await cache.del(`page:public:${oldSlug}`);
+  if (page.slug !== oldSlug) {
+    await cache.del(`page:public:${page.slug}`);
+  }
   return page;
 };
 
@@ -69,6 +75,7 @@ export const deletePage = async (id) => {
   if (page.systemKey) throw new BusinessRuleError('System pages cannot be deleted');
   page.deletedAt = new Date();
   await page.save();
+  await cache.del(`page:public:${page.slug}`);
 };
 
 export const duplicatePage = async (id, actorId) => {
@@ -127,6 +134,7 @@ export const publishPage = async (id, actorId) => {
   page.status = 'published';
   page.hasUnpublishedChanges = false;
   await page.save();
+  await cache.del(`page:public:${page.slug}`);
   return page;
 };
 
@@ -134,6 +142,7 @@ export const unpublishPage = async (id) => {
   const page = await repo.findByIdOrFail(id);
   page.status = 'unpublished';
   await page.save();
+  await cache.del(`page:public:${page.slug}`);
   return page;
 };
 
@@ -161,14 +170,25 @@ export const getAdminPreview = async (id) => {
 
 /** Public delivery — published content only, never draft. */
 export const getPublicPageBySlug = async (slug) => {
+  const cacheKey = `page:public:${slug}`;
+  const cached = await cache.get(cacheKey);
+  if (cached) return cached;
+
   const page = await Page.findOne({ slug, deletedAt: null });
   if (!page || page.status !== 'published') throw new NotFoundError('Page');
   const sections = await resolveSections(page.published.sections);
-  return { title: page.title, slug: page.slug, sections, seo: page.seo };
+  const result = { title: page.title, slug: page.slug, sections, seo: page.seo };
+
+  await cache.set(cacheKey, result, 60); // Cache resolved page for 60 seconds
+  return result;
 };
 
 /** Metadata for static system routes (About/Contact/Blog) that don't render CMS sections. */
 export const getPublicPageMetaBySlug = async (slug) => {
+  const cacheKey = `page:meta:${slug}`;
+  const cached = await cache.get(cacheKey);
+  if (cached) return cached;
+
   const page = await Page.findOne({
     slug,
     deletedAt: null,
@@ -177,5 +197,7 @@ export const getPublicPageMetaBySlug = async (slug) => {
     .select('title slug seo updatedAt')
     .lean();
   if (!page) throw new NotFoundError('Page');
+
+  await cache.set(cacheKey, page, 60);
   return page;
 };

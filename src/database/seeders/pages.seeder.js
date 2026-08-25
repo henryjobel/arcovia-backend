@@ -131,7 +131,7 @@ const ctaSection = () =>
 
 const featuresSection = () =>
   section('features', {
-    eyebrow: 'Why Arcovia',
+    eyebrow: 'Why Avron',
     heading: 'Premium delivery without visual compromise.',
     items: REASONS.map((r) => ({ _uid: genUid(), ...r })),
   });
@@ -154,7 +154,7 @@ function portfolioSections() {
   return [
     section('page-hero', {
       crumbLabel: 'Portfolio', eyebrow: 'Portfolio', heading: 'A visual archive of spaces with quiet drama.',
-      intro: 'Filter through selected residential, commercial, and hospitality projects by Arcovia Studio.',
+      intro: 'Filter through selected residential, commercial, and hospitality projects by Avron Studio.',
       image: mediaRef('photo-1616486338812-3dadae4b4ace', 1900, 900),
     }),
     section('portfolio-grid', { eyebrow: '', heading: 'Every project we have delivered.', limit: 0 }, { kind: 'entries', contentType: 'project', limit: 0 }),
@@ -178,7 +178,7 @@ function testimonialsSections() {
   return [
     section('page-hero', {
       crumbLabel: 'Testimonials', eyebrow: 'Testimonials', heading: 'Client trust shaped through craft and clarity.',
-      intro: 'What homeowners, founders, and hospitality clients say about working with Arcovia Studio.',
+      intro: 'What homeowners, founders, and hospitality clients say about working with Avron Studio.',
       image: mediaRef('photo-1600210492493-0946911123ea', 1900, 900),
     }),
     section('testimonials-slider', { eyebrow: 'Client Trust', heading: 'Spaces remembered by the people who live in them.', intro: 'Our clients value the balance between visual ambition, calm communication, and disciplined execution.', limit: 0 }, { kind: 'entries', contentType: 'testimonial', limit: 0 }),
@@ -199,7 +199,7 @@ function processSections() {
   return [
     section('page-hero', {
       crumbLabel: 'Process', eyebrow: 'Process', heading: 'A calm system for ambitious interiors.',
-      intro: 'Discover how Arcovia Studio moves from early brief to concept, visualization, execution, and handover.',
+      intro: 'Discover how Avron Studio moves from early brief to concept, visualization, execution, and handover.',
       image: mediaRef('photo-1600566752355-35792bedcfea', 1900, 900),
     }),
     section('process-steps', { eyebrow: 'Process', heading: 'A precise journey from brief to handover.', intro: 'The studio process keeps creative direction, budget discipline, and site delivery connected through every stage.' }, { kind: 'entries', contentType: 'process-step' }),

@@ -4,12 +4,13 @@ import { ok, created } from '../../core/utils/ApiResponse.js';
 import { env, isProd } from '../../config/env.js';
 
 const meta = (req) => ({ ip: req.ip, userAgent: req.headers['user-agent'] || '' });
+const crossSiteCookie = isProd || Boolean(process.env.VERCEL);
 
 const setRefreshCookie = (res, token) =>
   res.cookie(env.REFRESH_COOKIE_NAME, token, {
     httpOnly: true,
-    secure: isProd,
-    sameSite: 'lax',
+    secure: crossSiteCookie,
+    sameSite: crossSiteCookie ? 'none' : 'lax',
     path: '/api/v1/auth',
     maxAge: env.JWT_REFRESH_EXPIRES_DAYS * 24 * 60 * 60 * 1000,
   });

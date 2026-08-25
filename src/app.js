@@ -15,6 +15,7 @@ import { flattenedApiCatalog, renderStatusDashboard } from './core/utils/statusD
 import routes from './routes/index.js';
 
 const app = express();
+const allowAnyOrigin = Boolean(process.env.VERCEL) || env.CORS_ORIGINS === '*';
 
 app.set('trust proxy', 1); // behind nginx/render/railway — correct req.ip for rate limiting
 
@@ -24,7 +25,7 @@ app.use(
   cors({
     origin(origin, cb) {
       // allow same-origin/no-origin (curl, mobile apps, SSR) and whitelisted origins
-      if (!origin || corsOrigins.includes(origin.replace(/\/$/, ''))) return cb(null, true);
+      if (!origin || allowAnyOrigin || corsOrigins.includes(origin.replace(/\/$/, ''))) return cb(null, true);
       cb(new Error(`Origin ${origin} not allowed by CORS`));
     },
     credentials: true,
