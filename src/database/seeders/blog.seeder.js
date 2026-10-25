@@ -72,11 +72,24 @@ const POSTS = [
       "And lesson five — editing. Hotel suites hold remarkably few objects, all intentional. Homes that adopt that restraint feel calmer within a day, and stay easier to keep beautiful for years.",
     ],
   },
+  {
+    slug: 'best-interior-design-company-in-narayanganj',
+    title: 'Best interior design company in Narayanganj: how to choose the right studio',
+    category: 'Design Notes',
+    date: '2026-08-27',
+    image: 'photo-1600607687939-ce8a6c25118c',
+    excerpt: 'Looking for the best interior design in Narayanganj? Here is what you should consider when hiring a design firm for your home, office, or duplex project.',
+    tags: ['Narayanganj', 'Local SEO', 'Design Notes'],
+    content: [
+      "Narayanganj is a bustling industrial and residential city in Bangladesh. With the rapid development of new high-rise apartments and duplexes in areas like Chasara, Jamtola, Siddhirganj, and Fatullah, the demand for modern interior design services is at an all-time high.",
+      "When looking for the best interior design company in Narayanganj, experience and local understanding are crucial. A studio must know how to maximize natural ventilation and daylight, given the dense layouts of Narayanganj buildings. Solid wood joinery, high-quality finishes, and intelligent space-saving storage are key elements of a well-designed Narayanganj home.",
+      "At Arcovia Studio, we have designed and executed premium residential and commercial interiors across Narayanganj from our head office right here in Chasara. Our approach is defined by restraint, tactile materials, and transparent turnkey execution. We manage everything from spatial layouts to sourcing unlacquered brass hardware, premium marble, and custom walnut furniture.",
+      "Whether you are looking to design a luxury duplex, a modern three-bedroom apartment, or an executive office, hiring a single design-and-build firm avoids coordination failures between contractors and designers. Choose a firm with a clear process, transparent pricing, and a portfolio that demonstrates longevity rather than short-lived trends."
+    ]
+  }
 ];
 
 export const seedBlog = async () => {
-  if (await Post.exists({})) return;
-
   const author = await User.findOne({ role: { $exists: true } }).sort('createdAt');
   const categorySlugs = [...new Set(POSTS.map((p) => p.category))];
   const categoryIds = {};
@@ -87,7 +100,9 @@ export const seedBlog = async () => {
     categoryIds[name] = cat._id;
   }
 
+  let createdCount = 0;
   for (const p of POSTS) {
+    if (await Post.exists({ slug: p.slug })) continue;
     await Post.create({
       title: p.title,
       slug: p.slug,
@@ -103,6 +118,7 @@ export const seedBlog = async () => {
       createdBy: author?._id,
       updatedBy: author?._id,
     });
+    createdCount++;
   }
-  logger.info(`  + blog: ${POSTS.length} posts across ${categorySlugs.length} categories`);
+  logger.info(`  + blog: seeded ${createdCount} new posts, total ${POSTS.length} posts across ${categorySlugs.length} categories`);
 };
